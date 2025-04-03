@@ -23,6 +23,7 @@ BEGIN
 
     SELECT 
         *
-    FROM Students
-    WHERE StudentNumber = @StudentNumber;
+    FROM People p
+    WHERE p.StudentNumber = @StudentNumber 
+      AND p.Type = 'Student';  -- Use single quotes for string literals
 END

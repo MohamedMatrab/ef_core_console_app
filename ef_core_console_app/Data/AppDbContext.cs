@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ef_core_console_app.Models;
+using System.ComponentModel.DataAnnotations;
 namespace ef_core_console_app.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
@@ -133,11 +134,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
 public class TeacherSubjectDto
 {
+    [Key]
+    public int? Id { get; set; }
     public int TeacherId { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
     public DateOnly HireDate { get; set; }
     public int SubjectId { get; set; }
-    public string SubjectName { get; set; }
-    public string SubjectDescription { get; set; }
+    public string SubjectName { get; set; } = default!;
+    public string SubjectDescription { get; set; } = default!;
 }

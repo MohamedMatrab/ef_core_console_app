@@ -25,20 +25,33 @@ container.Verify();
 using (AsyncScopedLifestyle.BeginScope(container))
 {
     var unitOfWork = container.GetInstance<UnitOfWork>();
-    string studentNumber = "S2023001";
-    var students2 = unitOfWork.DbContext.Set<Student>()
-                 .FromSqlRaw("EXEC [GetStudentByStudentNumber] @p0", studentNumber)
-                 .AsEnumerable();
-
-    var student = students2.FirstOrDefault();
-
-    if (student != null) Console.WriteLine(student?.FirstName);
-    else Console.WriteLine("No student found.");
-
-    var teacherSubjects = await unitOfWork.DbContext.V_Teacher_Subjects.ToListAsync();
-
-    foreach (var teacherSubject in teacherSubjects)
+    try
     {
-        Console.WriteLine($"Teacher: {teacherSubject.FirstName} {teacherSubject.LastName} - Subject: {teacherSubject.SubjectName}");
+        string studentNumber = "S2023001";
+        var students2 = unitOfWork.DbContext.Set<Student>()
+                     .FromSqlRaw("EXEC [GetStudentByStudentNumber] @p0", studentNumber)
+                     .AsEnumerable();
+
+        var student = students2.FirstOrDefault();
+
+        if (student != null) Console.WriteLine(student?.FirstName);
+        else Console.WriteLine("No student found.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+
+    try
+    {
+        var teacherSubjects = await unitOfWork.DbContext.V_Teacher_Subjects.ToListAsync();
+
+        foreach (var teacherSubject in teacherSubjects)
+        {
+            Console.WriteLine($"Teacher: {teacherSubject.FirstName} {teacherSubject.LastName} - Subject: {teacherSubject.SubjectName}");
+        }
+    }catch(Exception ex)
+    {
+        Console.WriteLine(ex.Message);
     }
 }
